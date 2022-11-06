@@ -1,0 +1,58 @@
+CREATE DATABASE CSM;
+CREATE TABLE passengers (
+	pid INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL,
+    email VARCHAR(20) NOT NULL,
+    phoneNo INT NOT NULL,
+    dob DATE,
+    gender VARCHAR(10),
+    password VARCHAR(20)
+    );
+    
+CREATE TABLE driver (
+	did INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL,
+    email VARCHAR(20) NOT NULL,
+    phoneNo INT NOT NULL,
+    dob DATE,
+    password VARCHAR(20)
+);
+
+CREATE TABLE cabDetails(
+	cid INT PRIMARY KEY AUTO_INCREMENT,
+    cabModel VARCHAR(20),
+    cabDescription VARCHAR(200),
+    cabTotalCapacity INT NOT NULL,
+    cabRate INT NOT NULL,
+    driverId INT NOT NULL,
+    CONSTRAINT FK_driverId FOREIGN KEY
+    (driverId) REFERENCES driver(did) on delete cascade
+);
+
+CREATE TABLE booking(
+	bid INT PRIMARY KEY AUTO_INCREMENT,
+    passengersId INT NOT NULL,
+    CONSTRAINT FK_passengerId FOREIGN KEY
+    (passengersId) REFERENCES passengers(pid) on delete cascade,
+    cabId INT NOT NULL,
+    CONSTRAINT FK_cabId FOREIGN KEY
+    (cabId) REFERENCES cabDetails(cid),
+    bookingDate DATE,
+    startDate DATE,
+    noOfDays INT NOT NULL,
+    fromPlace VARCHAR(20) NOT NULL,
+    toPlace VARCHAR(20) NOT NULL,
+    starTime TIME,
+    noOfPassengers INT NOT NULL,
+    rate INT NOT NULL
+);
+
+CREATE TABLE payment(
+	paymentId INT PRIMARY KEY AUTO_INCREMENT,
+    date DATE,
+    passengersId INT ,
+    CONSTRAINT FK_payment_passengersId FOREIGN KEY
+    (passengersId) REFERENCES passengers(pid) on delete set null    
+);
+
+DROP TABLE cabdetails;
